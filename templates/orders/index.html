@@ -1,0 +1,75 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+{% load static %}
+    <style>
+        .orders__container{
+            {#display: flex;#}
+            {#flex-direction: column;#}
+            {#justify-content: center;#}
+            {#align-items: stretch;#}
+            {##}
+            {#border: 1px solid #ccc;#}
+            {##}
+            {#padding: 10px;#}
+            {##}
+            {#margin-bottom: 15px;#}
+        }
+
+        table{
+            width: 100%;
+
+            text-align: center;
+
+            margin-bottom: 20px;
+        }
+
+        tr{
+            padding: 15px;
+
+            border-bottom: 1px solid #ccc;
+        }
+
+        tr:last-child{
+            border-bottom: none;
+        }
+
+        .order__item{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            border-bottom: 1px solid #ccc;
+        }
+
+        .order__item:last-child{
+            border-bottom: none;
+        }
+
+        a{
+            text-decoration: underline;
+            color: blue;
+        }
+    </style>
+    <div class="orders__container">
+            <table>
+                <tr>
+                    <td>Дата створення</td>
+                    <td>Сума до оплати</td>
+                    <td>Статус</td>
+                    <td></td>
+                </tr>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.date }}</td>
+                        <td>{{ order.price }}</td>
+                        <td>{{ order.status }}</td>
+                        <td>
+                            <a href="/orders/id/{{ order.id }}"> Переглянути замовлення</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+    </div>
+
+{% endblock content %}

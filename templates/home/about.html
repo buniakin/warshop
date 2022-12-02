@@ -1,0 +1,23 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+{% load static %}
+        <div class="about">
+         <div class="container">
+            <div class="row d_flex">
+               <div class="col-md-5">
+                  <div class="about_img">
+                     <figure><img src="{% static 'img/about_img.png' %}" alt="#"/></figure>
+                  </div>
+               </div>
+               <div class="col-md-7">
+                  <div class="titlepage">
+                     <h2>Про наш магазин</h2>
+                     <p>В нашому магазині доступний не широкий, але дуже актуальний асортимент якісного європейського військового спорядження. Ми ретельно вибираємо елементи екипіровки, тестуємо і тільки потім ви можете придбати їх в цьому магазині</p>
+                  </div>
+                  <a class="read_more" href="https://soundcloud.com/user-737246826/putinu-pridet-pizda-versiya-2">Путіну Пізда</a>
+               </div>
+            </div>
+         </div>
+      </div>
+{% endblock content %}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uk">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <title>boystoys {{ page_title }}</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">
+      <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+      <link rel="icon" href="{% static 'images/fevicon.png' %}" type="image/gif" />
+      <link rel="stylesheet" href="{% static 'css/jquery.mCustomScrollbar.min.css' %}">
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+       <script src="{% static 'js/jquery.min.js' %}"></script>
+
+   </head>
+    <div class="language" style="text-align: center">
+   <img src="{% static 'img/lang__ru.png' %}" alt="ru" data-google-lang="ru" class="language__img">
+   <img src="{% static 'img/lang__en.png' %}" alt="en" data-google-lang="en">
+   <img src="{% static 'img/lang__de.png' %}" alt="de" data-google-lang="de" class="language__img">
+   <img src="{% static 'img/lang__fr.png' %}" alt="fr" data-google-lang="fr" class="language__img">
+   <img src="{% static 'img/lang__pt.png' %}" alt="pt" data-google-lang="pt" class="language__img">
+   <img src="{% static 'img/lang__es.png' %}" alt="es" data-google-lang="es" class="language__img">
+   <img src="{% static 'img/lang__it.png' %}" alt="it" data-google-lang="it" class="language__img">
+   <img src="{% static 'img/lang__zh.png' %}" alt="zh" data-google-lang="zh-CN" class="language__img">
+   <img src="{% static 'img/lang__ar.png' %}" alt="ar" data-google-lang="ar" class="language__img">
+   <img src="{% static 'img/lang__nl.png' %}" alt="nl" data-google-lang="nl" class="language__img">
+   <img src="{% static 'img/lang__sv.png' %}" alt="sv" data-google-lang="sv" class="language__img">
+</div>
+   <!-- body -->
+   <body class="">
+
+      <!-- loader  -->
+      <div class="loader_bg">
+         <div class="loader"><img src="{% static 'img/loading.gif' %}" alt="#" /></div>
+      </div>
+      <!-- NAVIGATION -->
+		{% include 'fragments/navigation.html' %}
+      <!-- /NAVIGATION -->
+
+      <!-- CONTENT PLACEHOLDER -->
+		{% block content %}{% endblock content %}
+      <!-- /CONTENT PLACEHOLDER -->
+      <!--  footer -->
+     {% include 'fragments/footer.html' %}
+      <!-- end footer -->
+
+      {% include 'fragments/modal.html' %}
+
+      <!-- Javascript files-->
+      <script>
+          function showModal(message){
+                            let modalBlock = document.getElementById("modalBlock");
+                            let modalMessage = document.getElementById("modalMessage");
+                            let closeModal = document.getElementById("closeModal");
+
+                            modalBlock.classList.add("modal__showed");
+                            modalBlock.style.background = "rgba(0,0,0,0.4)"
+
+                            closeModal.addEventListener("click", function (){
+                                modalBlock.style.background = "rgba(0,0,0,0)"
+
+                                setTimeout(function (){
+                                    modalBlock.classList.remove("modal__showed")
+                                }, 150);
+
+                            });
+
+                            modalMessage.innerHTML = message;
+                        }
+      </script>
+       <script src="{% static 'js/popper.min.js' %}"></script>
+      <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+      <script src="{% static 'js/jquery-3.0.0.min.js' %}"></script>
+      <!-- sidebar -->
+      <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+      <script src="{% static 'js/custom.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="{% static 'js/google-translate.js' %}"></script>
+    <script src="http://translate.google.com/translate_a/element.js?cb=TranslateInit"></script>
+
+   </body>
+</html>
+

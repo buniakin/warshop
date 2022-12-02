@@ -1,0 +1,23 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+{% load static %}
+               <div class="col-md-7">
+                  <div class="titlepage">
+                     <h2>Авторизація</h2>
+                      <div class="error" style="color:red; font-style: italic;">
+                          {{ error }}
+                      </div>
+                      <form action="entry" method="post">
+                          {% csrf_token %}
+                          <label for="login_input">Login</label>
+                          <input id="login_input" type="text" name="login">
+
+                          <label for="password_input">Password</label>
+                          <input id="password_input" type="password" name="password">
+
+                          <input type="submit" value="Увійти">
+                      </form>
+                  </div>
+               </div>
+{% endblock content %}

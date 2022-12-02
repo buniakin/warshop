@@ -1,0 +1,45 @@
+
+{% block content %}
+{% load static %}
+
+<div style="text-align: center">
+  <h2>ЛОГІН</h2>
+</div>
+
+
+    <form method="post" id="form1">
+      {% csrf_token %}
+      <table>
+        {{ form.as_p }}
+        <tr>
+          <td>&nbsp;</td>
+          <td><input type="submit" value="Залогінитись" style="width: 100px; background-color: lightblue"></td>
+        </tr>
+      </table>
+    </form>
+<div style="text-align: center">
+  <a href="/">НА ГОЛОВНУ</a>
+</div>
+  <style>
+                       #form1 {
+                            width: 400px;
+                            border: 1px solid gray;
+                            border-radius: 15px;
+                            margin: 25px auto;
+                            padding: 30px 40px;
+                            text-align: left;
+                            box-shadow: 10px 10px 40px silver;
+                       }
+
+                       input {
+                            width: 100%;
+                       }
+                       .error {
+                            color: red;
+                       }
+                       .icon {
+                            width: 24px;
+                            margin-left: 10px;
+                       }
+                   </style>
+{% endblock %}

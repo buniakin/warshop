@@ -1,0 +1,69 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+{% load static %}
+               <div style="padding-top: 50px">
+               <div class="col-md-7">
+                  <div class="titlepage">
+                     <h2 style="margin-left: 270px">Реєстрація</h2>
+
+                      <style>
+                       #form1 {
+                            width: 400px;
+                            border: 1px solid blue;
+                            border-radius: 15px;
+                            margin: 25px auto;
+                            padding: 30px 40px;
+                            text-align: left;
+                            box-shadow: 10px 10px 40px silver;
+                       }
+                       input {
+                            width: 87%;
+                       }
+                       .error {
+                            color: red;
+                       }
+                       .icon {
+                            width: 24px;
+                            margin-left: 10px;
+                       }
+                   </style>
+
+{#                      onsubmit="return true"#}
+                      <form id="form1" method="post" action="/account/reg">
+                        {% csrf_token %}
+                          <div class="form-group">
+                              Логін: <br>
+                              <input type="text" id="login" name="login" required>
+                              <img id="login-ico" src="{% static 'img/question.png' %}" alt="..." class="icon">
+                              <div id="login-err" class="error"></div>
+                          </div>
+                          <div class="form-group">
+                              Пароль: <br>
+                              <input type="password" id="pass1" name="pass1" required>
+                              <img id="pass1-ico" src="{% static 'img/question.png' %}" alt="..." class="icon">
+                              <div id="pass1-err" class="error"></div>
+                          </div>
+                          <div class="form-group">
+                              Повторіть пароль: <br>
+                              <input type="password" id="pass2" name="pass2" required>
+                              <img id="pass2-ico" src="{% static 'img/question.png' %}" alt="..." class="icon">
+                              <div id="pass2-err" class="error"></div>
+                          </div>
+                          <div class="form-group">
+                              Email: <br>
+                              <input type="email" id="email" name="email" required>
+                              <img id="email-ico" src="{% static 'img/question.png' %}" alt="..." class="icon">
+                              <div id="email-err" class="error"></div>
+                          </div>
+                          <p style="margin-top: 30px; text-align: center; width: 150px">
+                              <input style="margin-bottom: 5px" id="submit" type="submit" value="Відправити" class="btn btn-success b1">
+                              <input id="reset" type="reset" value="Очистити" class="btn btn-danger b1">
+                          </p>
+                      </form>
+                  </div>
+               </div>
+                   </div>
+                <hr>
+
+{% endblock content %}

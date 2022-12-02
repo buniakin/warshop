@@ -1,0 +1,94 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+{% load static %}
+
+        <div id="about" class="shop" style="margin-top: 0px">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-5">
+                  <div  class="shop_img">
+                     <figure><img src="{% static 'img/images.png' %}" alt="#"/></figure>
+                  </div>
+               </div>
+               <div class="col-md-7 padding_right0">
+                  <div class="max_width">
+                     <div class="titlepage">
+                        <h2>Найкраще спорядження в нашому магазині</h2>
+                        <p>Ми самі займаємось підбором, замовленням та доставкою товарів. У нас демократична ціна на якісний товар, тому що немає жодних посередників в схемі</p>
+                        <a class="read_more" href="https://ru.wikipedia.org/wiki/M142_HIMARS">Пізда Путіну</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+        <div class="glasses">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-10 offset-md-1">
+                  <div class="titlepage">
+                     <h2>Наші товари</h2>
+                     <p>Підібране спорядження британських, німецьких та італійських виробникив
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="container-fluid">
+            <div class="row">
+
+                {% for product in products %}
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+                        <div class="products">
+                            <figure><img src="{{ product.image.url }}" alt="#" width="250px"/></figure>
+                            <h3 id="2">{{ product.price }} <span class="blu">грн</span></h3>
+                            <p>{{ product.name }}</p>
+                            <div class="add-to-cart">
+                                <input type="hidden" value="2">
+                                <button class="add-to-cart-btn addToCartBtn" data-productid="{{ product.id }}"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                            </div>
+                        </div>
+                   </div>
+                {% endfor %}
+
+                <script>
+                    $(document).ready(function () {
+                        let btns = document.querySelectorAll(".addToCartBtn")
+                        for (let i = 0; i < btns.length ;i++){
+                            btns[i].addEventListener("click", function (){
+                                $.ajax({
+                                        type: 'GET',
+                                        url: "/cart/addToCart",
+                                        dataType: "json",
+                                        data: {
+                                            productID : this.dataset.productid
+                                        },
+                                        success: function (response) {
+                                            if(response["added"] == true){
+                                                let cartCounter = $("#cart__count");
+                                                cartCounter.text(response["count"]);
+                                            }
+
+                                            showModal(response["message"]);
+                                        },
+                                        error: function (response) {
+                                            showModal("Что-то пошло не так(");
+                                        }
+                                    })
+                                }
+                            )
+                        }
+                    });
+                </script>
+
+               <div class="col-md-12">
+                  <a style="margin-bottom: 15px" class="read_more" href="#">Більше товарів</a>
+               </div>
+            </div>
+         </div>
+
+
+      </div>
+{% endblock content %}

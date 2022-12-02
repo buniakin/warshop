@@ -1,0 +1,157 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+{% load static %}
+    <style>
+                       .cart{
+                            max-width: 1000px;
+                           margin: 15px auto 0 auto;
+                       }
+
+                       .cart .positions__items{
+                           display: flex;
+                           flex-direction: column;
+                           justify-content: center;
+                           align-items: stretch;
+                       }
+
+                       .cart .positions__item{
+                           display: flex;
+                           justify-content: space-between;
+                           align-items: center;
+
+                           border: 1px solid #ccc;
+                           padding: 10px;
+
+                           margin-bottom: 15px;
+                       }
+
+                       .cart img{
+                           width: 100px;
+                       }
+
+                       .cart input[type="number"]{
+                           width: 35px;
+                       }
+
+                       .cart a{
+                           cursor: pointer;
+
+                           text-decoration: none;
+
+                           transition: 0.15s ease-in;
+
+                           color: #f61111;
+                       }
+
+                       .cart a:hover{
+                           color: #fc5959;
+                       }
+
+                       .info{
+                           display: flex;
+                           justify-content: center;
+                           align-items: center;
+
+                           margin-top: 20px;
+                       }
+
+                       .info .total__price{
+                           margin-right: 20px;
+                       }
+
+                       .buttons{
+                           margin-top: 20px;
+
+                           display: flex;
+                           justify-content: center;
+                           align-items: center;
+                       }
+
+                       button, input[type="submit"]{
+                           font-size: 16px;
+                           padding: 10px 15px;
+
+                           cursor: pointer;
+                           background: #0058b4;
+                           outline: none;
+                           border: 1px solid #ccc;
+                           border-radius: 5px;
+
+                           transition: 0.15s ease-in;
+
+                           margin: 0 10px;
+
+                           color: #F6CD01;
+                       }
+
+                       button:hover, input[type="submit"]:hover{
+                           background: #f6cd01;
+
+                            color: #0058B4;
+                       }
+
+                       .submitForm{
+                           display: flex;
+                           justify-content: center;
+                           align-items: center;
+
+                           margin-top: 20px;
+                       }
+
+                   </style>
+
+    <h2 style="text-align: center">Замовлення №{{ order.id }}</h2>
+    <div class="cart">
+                       <div class="positions__items">
+                            {% for position in cartPositions %}
+                                <div class="positions__item">
+                                    <input type="hidden" name="id" value="{{ order.id }}">
+                                    <div class="item__image">
+                                        <img src="{{ position.product.image.url }}" alt="">
+                                    </div>
+                                    <div class="item__name">
+                                        {{ position.product.name }}
+                                    </div>
+                                    <div class="item__price">
+                                        <span class="totalPrice" data-price="{{ position.product.price }}">{{ position.totalPrice }}</span> Грн
+                                    </div>
+                                    <div class="item__count">
+                                        <p>{{ position.count }} шт</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                       </div>
+                        <div class="info">
+                            <div class="total__price">
+                                Загальна сума: <span id="resultPrice"></span> Грн
+                            </div>
+                        </div>
+    </div>
+
+
+                            <form action="/orders/cancel" method="post">
+                                {% csrf_token %}
+                                <div class="buttons">
+                                    <input type="hidden" value="{{ order.id }}" name="id">
+                                   <button id="cancelBtn" type="input">Скасувати</button>
+                                </div>
+                            </form>
+
+    <script>
+
+                       $(document).ready(function () {
+                          let totalPricies = document.getElementsByClassName("totalPrice");
+
+                           let resultPrice = 0.00;
+
+                           for (let i = 0; i < totalPricies.length; i++){
+                                resultPrice += parseFloat(totalPricies[i].innerHTML);
+                           }
+                           let resultPriceSpan = document.getElementById("resultPrice")
+
+                           resultPriceSpan.innerHTML = resultPrice;
+                       });
+
+                   </script>
+{% endblock content %}

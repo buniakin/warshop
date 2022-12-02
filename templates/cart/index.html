@@ -1,0 +1,228 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+{% load static %}
+               <div style="padding-top: 50px">
+               <div class="col-md-7">
+                  <div class="titlepage">
+                     <h2>Кошик</h2>
+                  </div>
+               </div>
+                <hr>
+                       <h3>Перегляньте вміст вашого кошику:</h3>
+
+                   <style>
+                       .cart__form{
+                            max-width: 1000px;
+                           margin: 15px auto 0 auto;
+                       }
+
+                       .cart__form .positions__items{
+                           display: flex;
+                           flex-direction: column;
+                           justify-content: center;
+                           align-items: stretch;
+                       }
+
+                       .cart__form .positions__item{
+                           display: flex;
+                           justify-content: space-between;
+                           align-items: center;
+
+                           border: 1px solid #ccc;
+                           padding: 10px;
+
+                           margin-bottom: 15px;
+                       }
+
+                       .cart__form img{
+                           width: 100px;
+                       }
+
+                       .cart__form input[type="number"]{
+                           width: 35px;
+                       }
+
+                       .cart__form a{
+                           cursor: pointer;
+
+                           text-decoration: none;
+
+                           transition: 0.15s ease-in;
+
+                           color: #f61111;
+                       }
+
+                       .cart__form a:hover{
+                           color: #fc5959;
+                       }
+
+                       .info{
+                           display: flex;
+                           justify-content: center;
+                           align-items: center;
+
+                           margin-top: 20px;
+                       }
+
+                       .info .total__price{
+                           margin-right: 20px;
+                       }
+
+                       .buttons{
+                           margin-top: 20px;
+
+                           display: flex;
+                           justify-content: center;
+                           align-items: center;
+                       }
+
+                       .buttons button, input[type="submit"]{
+                           font-size: 16px;
+                           padding: 10px 15px;
+
+                           cursor: pointer;
+                           background: #0058b4;
+                           outline: none;
+                           border: 1px solid #ccc;
+                           border-radius: 5px;
+
+                           transition: 0.15s ease-in;
+
+                           margin: 0 10px;
+
+                           color: #F6CD01;
+                       }
+
+                       .buttons button:hover, input[type="submit"]:hover{
+                           background: #f6cd01;
+
+                            color: #0058B4;
+                       }
+
+                       .submitForm{
+                           display: flex;
+                           justify-content: center;
+                           align-items: center;
+
+                           margin-top: 20px;
+                       }
+
+                   </style>
+
+                   <form class="cart__form" id="cartsForm" method="post" action="/orders/create">
+                       {% csrf_token %}
+                       <div class="positions__items">
+                            {% for position in positions %}
+                                <div class="positions__item">
+                                    <input type="hidden" name="id" value="{{ position.id }}">
+                                    <div class="item__image">
+                                        <img src="{{ position.product.image.url }}" alt="">
+                                    </div>
+                                    <div class="item__name">
+                                        {{ position.product.name }}
+                                    </div>
+                                    <div class="item__price">
+                                        <span class="totalPrice" data-price="{{ position.product.price }}">{{ position.totalPrice }}</span> Грн
+                                    </div>
+                                    <div class="item__count">
+                                        <input type="number" min="1" value="{{ position.count }}" class="countInput" name="counter">
+                                    </div>
+                                    <div class="remove__item">
+                                        <a href="remove/{{ position.id }}">X</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                       </div>
+                        <div class="info">
+                            <div class="total__price">
+                                Загальна сума: <span id="resultPrice"></span> Грн
+                            </div>
+                            <div class="total__count">
+                                Загальна кількість товарів: <span id="resultCount">3</span>
+                            </div>
+                        </div>
+                           <div class="buttons">
+                               <button id="saveBtn" type="button">Зберегти</button>
+                               <input type="submit" value="Підтвердити замовлення">
+                           </div>
+                   </form>
+                   <script>
+                       function updateResults(){
+                           let counters = document.getElementsByClassName("countInput");
+                           let totalPricies = document.getElementsByClassName("totalPrice");
+
+                           let resultCount = 0;
+                           let resultPrice = 0.00;
+
+                           for (let i = 0; i < counters.length; i++){
+                                resultCount += parseInt(counters[i].value);
+                                resultPrice += parseFloat(totalPricies[i].innerHTML);
+                           }
+
+                           let resultCountSpan = document.getElementById("resultCount");
+                           let resultPriceSpan = document.getElementById("resultPrice")
+
+                           resultCountSpan.innerHTML = resultCount;
+                           resultPriceSpan.innerHTML = resultPrice;
+                       }
+
+                       $(document).ready(function () {
+                           updateResults();
+
+                           let counters = document.getElementsByClassName("countInput");
+
+                           for (let i = 0; i < counters.length; i++){
+                               counters[i].addEventListener("change", function (){
+                                    let parent = counters[i].parentElement.parentElement;
+                                    let totalPrice = parent.getElementsByClassName("totalPrice")[0];
+
+                                    let total = totalPrice.dataset.price * this.value;
+
+                                    totalPrice.innerHTML = total;
+
+                                    updateResults();
+                                });
+                           }
+
+
+
+                           $("#saveBtn").click(function (e){
+
+                               let idInputs = $('input[name="id"]');
+                               let counterInputs = $('input[name="counter"]');
+                               let totalPricies = $('.totalPrice');
+
+                               let positions = [];
+
+                               for(let i = 0; i < idInputs.length; i++){
+                                   positions.push({
+                                       id:idInputs[i].value,
+                                       count:counterInputs[i].value,
+                                       totalPrice: parseFloat(totalPricies[i].innerHTML)
+                                   })
+                                   //counters.push(counterInputs[i].value)
+                               }
+
+
+
+                               $.ajax({
+                                        type: 'POST',
+                                        url: "save",
+                                        dataType: "json",
+                                        data: {
+                                            csrfmiddlewaretoken: '{{ csrf_token }}',
+                                            positions: JSON.stringify(positions)
+                                        },
+                                        success: function (response) {
+                                            showModal(response["message"]);
+                                        },
+                                        error: function (response) {
+                                            showModal("Что-то пошло не так(");
+                                        }
+                                    })
+                           })
+                       });
+                   </script>
+               </div>
+{% endblock content %}
