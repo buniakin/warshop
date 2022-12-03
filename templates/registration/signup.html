@@ -9,11 +9,22 @@
 
 <form method="post" id="form1" style="width: 600px">
     {% csrf_token %}
-    {{form}}
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
     <input type="submit" value="Зареєструватися" style="margin-bottom: 5px; margin-top: 20px; background-color: lightblue">
 </form>
 <div style="text-align: center; margin-bottom: 20px">
-    <a href="{% url 'login' %}" style="font-size: 20px; color: green">До сторінки реєстрації</a>
+    <a href="{% url 'login' %}" style="font-size: 20px; color: green">До сторінки логіну</a>
     <a href="{% url 'home' %}" style="margin-left: 20px; font-size: 20px; color: navy">Домашня</a>
 </div>
 
